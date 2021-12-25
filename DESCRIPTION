@@ -1,0 +1,24 @@
+Package: njgeo
+Title: Tools for geocoding addresses using the State of New Jersey's official geocoding service and working with spatial data covering New Jersey
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Gavin",
+           family = "Rozzi",
+           role = c("aut", "cre"),
+           email = "gr@gavinrozzi.com",
+           comment = c(ORCID = "0000-0002-9969-8175"))
+Description: What the package does (one paragraph).
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports:
+  sf,
+  jsonlite,
+  httr
+Suggests:
+  knitr,
+  rmarkdown,
+  markdown
+VignetteBuilder: knitr, rmarkdown
+X-schema.org-keywords: new-jersey, geocoding, geocoder, arcgis
