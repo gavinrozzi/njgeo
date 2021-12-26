@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+library(njgeo)
 ```
 
 # njgeo
@@ -28,4 +29,51 @@ You can install the development version of njgeo from [GitHub](https://github.co
 ``` r
 # install.packages("devtools")
 devtools::install_github("gavinrozzi/njgeo")
+```
+
+## Usage
+
+### Geocoding
+
+This package supports freely geocoding addresses in New Jersey. No API keys are required and this does not depend on any commercial services.
+
+## Find all matching address candidates for an address
+
+```{r}
+geocode_address_candidates("33 Livingston Ave. New Brunswick, NJ")
+```
+
+The geocoding output defaults to EPSG:4326 but another CRS can be specified via arguments:
+
+```{r}
+geocode_address_candidates("33 Livingston Ave. New Brunswick, NJ", crs = 3424)
+```
+
+### Reverse Geocoding
+
+Provide a point to get matching addresses:
+```{r}
+reverse_geocode(-74.44513, 40.49297)
+```
+
+## Shape and boundary files
+
+You can easily obtain spatial boundary data for use in projects via this package. All objects are returned as an `{sf}` object and a coordinate reference system can be specified via arguments to repoject the shape into a different CRS.
+
+### State
+
+```{r}
+get_state_bounds()
+```
+
+### Counties
+
+```{r}
+get_county_bounds()
+```
+
+### Municipalities
+
+```{r}
+get_muni_bounds()
 ```

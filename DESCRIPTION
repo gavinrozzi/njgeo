@@ -1,5 +1,5 @@
 Package: njgeo
-Title: Tools for geocoding addresses using the State of New Jersey's official geocoding service & accessing spatial data
+Title: Tools for geocoding addresses in New Jersey using the NJOGIS official geocoding service & accessing related spatial data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Gavin",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "gr@gavinrozzi.com",
            comment = c(ORCID = "0000-0002-9969-8175"))
-Description: Provides an R interface to free geocoding APIs maintained by the State of New Jersey and municipal / county shapefiles.
+Description: Provides an R interface to free geocoding REST APIs maintained by the State of New Jersey and commonly used municipal, county & state shapefiles.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
