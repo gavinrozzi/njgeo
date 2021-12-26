@@ -43,17 +43,17 @@ geocode_address_candidates <- function(address = NULL,
     message("njgeo: downloading data")
     # Construct the API call
     response <- httr::GET(baseurl,
-                          path = "arcgis/rest/services/Tasks/NJ_Geocode/GeocodeServer/findAddressCandidates",
-                          query = list(
-                            f = "pjson",
-                            outSR = crs,
-                            Address = address,
-                            Address2 = address2,
-                            Address3 = address3,
-                            City = city,
-                            Postal = zip,
-                            maxLocations = max_results
-                          )
+      path = "arcgis/rest/services/Tasks/NJ_Geocode/GeocodeServer/findAddressCandidates",
+      query = list(
+        f = "pjson",
+        outSR = crs,
+        Address = address,
+        Address2 = address2,
+        Address3 = address3,
+        City = city,
+        Postal = zip,
+        maxLocations = max_results
+      )
     )
   }
 
@@ -63,3 +63,5 @@ geocode_address_candidates <- function(address = NULL,
 
   return(candidates)
 }
+
+
