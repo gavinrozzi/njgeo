@@ -1,3 +1,7 @@
 ^njgeo\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^README\.Rmd$
+^njgeo\.github
+^.github$
+_pkgdown.yml

@@ -11,8 +11,10 @@
 #' @importFrom sf st_as_sf
 #' @importFrom httr GET
 #' @importFrom httr content
+#' @importFrom httr http_error
+#' @importFrom curl has_internet
 #'
-#' @return
+#' @return an sf object with geocoded address candidates for a single address
 #' @export
 #'
 #' @examples
@@ -24,22 +26,37 @@ geocode_address_candidates <- function(address = NULL,
                                        zip = NULL,
                                        max_results = NULL,
                                        crs = 4326) {
+  # URL of state geocoding service
   baseurl <- "https://geo.nj.gov/"
 
+  # Check if internet connection exists before attempting data download
+  if (curl::has_internet() == FALSE) {
+    message("No internet connection. Please connect to the internet and try again.")
+    return(NULL)
+  }
 
-  response <- httr::GET(baseurl,
-    path = "arcgis/rest/services/Tasks/NJ_Geocode/GeocodeServer/findAddressCandidates",
-    query = list(
-      f = "pjson",
-      outSR = crs,
-      Address = address,
-      Address2 = address2,
-      Address3 = address3,
-      City = city,
-      Postal = zip,
-      maxLocations = max_results
+  # Check if data is available and download the data
+  if (httr::http_error(baseurl)) {
+    message("Data source broken. Please try again.")
+    return(NULL)
+  } else {
+    message("njgeo: downloading data")
+    # Construct the API call
+    response <- httr::GET(baseurl,
+                          path = "arcgis/rest/services/Tasks/NJ_Geocode/GeocodeServer/findAddressCandidates",
+                          query = list(
+                            f = "pjson",
+                            outSR = crs,
+                            Address = address,
+                            Address2 = address2,
+                            Address3 = address3,
+                            City = city,
+                            Postal = zip,
+                            maxLocations = max_results
+                          )
     )
-  )
+  }
+
   candidates <- jsonlite::fromJSON(httr::content(response, "text"), simplifyVector = TRUE, flatten = TRUE)
 
   candidates <- sf::st_as_sf(candidates[["candidates"]], coords = c("location.x", "location.y"), remove = FALSE, crs = crs)

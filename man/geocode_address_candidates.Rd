@@ -2,7 +2,7 @@
 % Please edit documentation in R/geocode_njogis.R
 \name{geocode_address_candidates}
 \alias{geocode_address_candidates}
-\title{Geocode an address and retrieve all candidates}
+\title{Geocode an address and retrieve all candidates using the NJOGIS ArcGIS REST API}
 \usage{
 geocode_address_candidates(
   address = NULL,
@@ -30,10 +30,10 @@ geocode_address_candidates(
 \item{crs}{Four digit coordinate reference system code. Defaults to 4326, 3424 and 4269 are also supported}
 }
 \value{
-
+an sf object with geocoded address candidates for a single address
 }
 \description{
-Geocode an address and retrieve all candidates
+Geocode an address and retrieve all candidates using the NJOGIS ArcGIS REST API
 }
 \examples{
 geocode_address_candidates(address = "33 Livingston Ave", city = "New Brunswick")
