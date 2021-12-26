@@ -16,6 +16,15 @@
     <loc>/reference/geocode_address_candidates.html</loc>
   </url>
   <url>
+    <loc>/reference/get_county_bounds.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_muni_bounds.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_state_bounds.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
 </urlset>
