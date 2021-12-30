@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# njgeo
+# njgeo <a href='https://gavinrozzi.github.io/njgeo/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -9,7 +9,7 @@
 <!-- badges: end -->
 
 Tools for geocoding addresses using the State of New Jersey’s official
-geocoding service & accessing spatial data
+geocoding service & accessing spatial data.
 
 ## Installation
 
@@ -72,6 +72,16 @@ geocode_address_candidates("33 Livingston Ave. New Brunswick, NJ", crs = 3424)
 #> 3    498710.2    593908.0    499266.8    594636.7 POINT (498988.5 594272.3)
 #> 4    506885.4    603602.2    507442.1    604331.1 POINT (507163.8 603966.6)
 ```
+
+### Batch Geocoding
+
+It is possible to batch geocode up to 1000 addresses at once using the
+two batch geocoding functions provided by the package.
+
+The `batch_geocode_addresses()` and `batch_geocode_sl()` functions can
+batch geocode up to 1000 addresses at a time. The first function expects
+multiple columns of data to geocode the address, while the **sl**
+version requires an address in single column format.
 
 ### Reverse Geocoding
 

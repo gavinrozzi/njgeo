@@ -1,6 +1,6 @@
 Package: njgeo
 Title: Tools for geocoding addresses in New Jersey using the NJOGIS official geocoding service & accessing related spatial data
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Gavin",
            family = "Rozzi",
