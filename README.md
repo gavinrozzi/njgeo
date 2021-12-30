@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# njgeo <a href='https://gavinrozzi.github.io/njgeo/'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# njgeo <a href='https://gavinrozzi.github.io/njgeo/'><img src='man/figures/logo.png' align="right" height="175" width="150" /></a>
 
 <!-- badges: start -->
 
