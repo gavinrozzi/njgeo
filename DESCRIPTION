@@ -16,7 +16,8 @@ Imports:
   sf,
   jsonlite,
   httr,
-  curl
+  curl,
+  dplyr
 Suggests:
   knitr,
   rmarkdown,

@@ -128,3 +128,133 @@ reverse_geocode <- function(lng, lat, distance = NULL, crs = 4326) {
   }
   return(response)
 }
+
+
+#' Batch geocode addresses
+#'
+#' @param df dataframe with addresses to be geocoded
+#' @param id primary key that uniquely identifies rows
+#' @param street street address column
+#' @param city city column
+#' @param state state column
+#' @param zip zip code column, expects a 5-digit zip code
+#' @param crs coordinate reference system to use for output
+#'
+#' @return an sf object containing geocoding results
+#' @importFrom jsonlite fromJSON
+#' @importFrom jsonlite toJSON
+#' @importFrom dplyr select
+#' @export
+#'
+batch_geocode_addresses <- function(df, id, street, city, state, zip, crs = 4326) {
+
+  # Stop if dataframe is too large for limits
+  if (nrow(df) > 1000) {
+    stop("Only 1000 addresses can be geocoded at a time. Please reduce the size of your dataframe and try again")
+  }
+
+  # Prepare data
+  adr_df <- dplyr::select(df, c(id, street, city, state, zip))
+  names(adr_df) <- c("OBJECTID", "Street", "City", "State", "Zip")
+
+  # Set missing ZIP codes to empty strings
+  adr_df$Zip <- ifelse(is.na(adr_df$Zip), "", as.character(adr_df$Zip))
+
+  # Generate JSON
+  tmp_list <- apply(adr_df, 1, function(i) list(attributes = as.list(i)))
+  # need to coerce OBJECTID to numeric
+  tmp_list <- lapply(tmp_list, function(i) {
+    i$attributes$OBJECTID <- as.numeric(i$attributes$OBJECTID)
+    i
+  })
+
+  adr_json <- jsonlite::toJSON(list(records = tmp_list), auto_unbox = TRUE)
+
+  # URL of state geocoding service
+  baseurl <- "https://geo.nj.gov/"
+
+  # Check if data is available and download the data
+  if (httr::http_error(baseurl)) {
+    message("Data source broken. Please try again.")
+    return(NULL)
+  } else {
+    message("njgeo: downloading data")
+    # Construct the API call
+    response <- httr::POST(
+      url = "https://geo.nj.gov/arcgis/rest/services/Tasks/Addr_NJ_cascade/GeocodeServer/geocodeAddresses",
+      body = list(addresses = adr_json, f = "pjson", outSR = crs),
+      encode = "form",
+    )
+
+    response <- jsonlite::fromJSON(httr::content(response, "text"), flatten = TRUE)
+
+    # Clean up rows that didn't geocode
+    results <- response[["locations"]]
+    results[is.na(results)] <- NA
+  }
+  return(results)
+}
+
+
+
+
+#' Batch geocode addresses in single line format
+#'
+#' @param df dataframe with addresses to be geocoded
+#' @param id primary key that uniquely identifies rows
+#' @param address street address column
+#' @param crs coordinate reference system to use for output
+#'
+#' @return a dataframe containing geocoding results
+#' @importFrom jsonlite fromJSON
+#' @importFrom jsonlite toJSON
+#' @importFrom httr POST
+#' @importFrom dplyr select
+#' @export
+#'
+batch_geocode_sl <- function(df, id, address, crs = 4326) {
+
+  # Stop if dataframe is too large for limits
+  if (nrow(df) > 1000) {
+    stop("Only 1000 addresses can be geocoded at a time. Please reduce the size of your dataframe and try again")
+  }
+
+  # Prepare data
+  adr_df <- dplyr::select(df, c(id, address))
+  names(adr_df) <- c("OBJECTID", "SingleLine")
+
+
+  # Generate JSON
+  tmp_list <- apply(adr_df, 1, function(i) list(attributes = as.list(i)))
+  # need to coerce OBJECTID to numeric
+  tmp_list <- lapply(tmp_list, function(i) {
+    i$attributes$OBJECTID <- as.numeric(i$attributes$OBJECTID)
+    i
+  })
+
+  adr_json <- jsonlite::toJSON(list(records = tmp_list), auto_unbox = TRUE)
+
+  # URL of state geocoding service
+  baseurl <- "https://geo.nj.gov/"
+
+  # Check if data is available and download the data
+  if (httr::http_error(baseurl)) {
+    message("Data source broken. Please try again.")
+    return(NULL)
+  } else {
+    message("njgeo: downloading data")
+    # Construct the API call
+    response <- httr::POST(
+      url = "https://geo.nj.gov/arcgis/rest/services/Tasks/Addr_NJ_cascade/GeocodeServer/geocodeAddresses",
+      body = list(addresses = adr_json, f = "pjson", outSR = crs),
+      encode = "form",
+    )
+
+    response <- jsonlite::fromJSON(httr::content(response, "text"), flatten = TRUE)
+
+    # Clean up rows that didn't geocode
+    results <- response[["locations"]]
+    results[is.na(results)] <- NA
+  }
+  return(results)
+}
