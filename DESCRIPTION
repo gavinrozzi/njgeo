@@ -22,5 +22,4 @@ Suggests:
   knitr,
   rmarkdown,
   markdown
-VignetteBuilder: knitr, rmarkdown
 X-schema.org-keywords: new-jersey, geocoding, geocoder, arcgis
