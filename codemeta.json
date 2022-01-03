@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "identifier": "njgeo",
   "description": "Provides an R interface to free geocoding REST APIs maintained by the State of New Jersey and commonly used municipal, county & state shapefiles.",
-  "name": "njgeo: Tools for geocoding addresses in New Jersey using the NJOGIS official geocoding service & accessing related spatial data",
+  "name": "njgeo: Tools for Geocoding Addresses in New Jersey using the NJOGIS Official Geocoding Service & Accessing Related Spatial Data",
   "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.1.0",
   "programmingLanguage": {
@@ -132,5 +132,5 @@
     "SystemRequirements": null
   },
   "keywords": ["new-jersey", "geocoding", "geocoder", "arcgis"],
-  "fileSize": "86.869KB"
+  "fileSize": "86.892KB"
 }

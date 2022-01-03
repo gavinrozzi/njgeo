@@ -5,5 +5,7 @@
 ^njgeo\.github
 ^.github$
 _pkgdown.yml
+^pkgdown$
 codemeta.json
 cran-comments.md
+^CRAN-SUBMISSION$
