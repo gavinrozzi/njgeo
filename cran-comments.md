@@ -1,7 +1,19 @@
-# cran-comments (2021-12-29)
-## Initial submission 
+# cran-comments (2021-01-13)
+## Resubmission
 
-This is an initial submission of the package "njgeo."
+Comment: Please reduce the length of the title to less than 65 characters.
+Response: This has been done.
+
+Comment: Please add a web reference for the API in the form <https:.....> to the
+description of the DESCRIPTION file with no space after 'https:' and
+angle brackets for auto-linking.
+
+Response: This has now been done and the appropriate web reference was added.
+
+Comment: Please write API names in undirected single quotes in title and
+description. e.g. 'NJOGIS'
+
+Response: This has been done.
 
 ## Test environments
 * local macOS Big Sur install on Apple Silicon, R 4.1.2
