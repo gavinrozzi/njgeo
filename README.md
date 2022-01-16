@@ -13,6 +13,12 @@ geocoding service & accessing spatial data.
 
 ## Installation
 
+You can install njgeo from CRAN using
+
+``` r
+install.packages("njgeo")
+```
+
 You can install the development version of njgeo from
 [GitHub](https://github.com/) with:
 

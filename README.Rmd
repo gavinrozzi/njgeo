@@ -24,6 +24,12 @@ Tools for geocoding addresses using the State of New Jersey's official geocoding
 
 ## Installation
 
+You can install njgeo from CRAN using
+
+``` r
+install.packages("njgeo")
+```
+
 You can install the development version of njgeo from [GitHub](https://github.com/) with:
 
 ``` r

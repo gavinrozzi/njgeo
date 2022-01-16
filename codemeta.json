@@ -2,8 +2,8 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "njgeo",
-  "description": "Provides an R interface to free geocoding REST APIs maintained by the State of New Jersey and commonly used municipal, county & state shapefiles.",
-  "name": "njgeo: Tools for Geocoding Addresses in New Jersey using the NJOGIS Official Geocoding Service & Accessing Related Spatial Data",
+  "description": "Provides an R interface to free geocoding REST APIs maintained by the New Jersey Office of GIS <https://njgin.nj.gov/njgin/edata/geocoding/index.html#!/> and commonly used shapefiles. ",
+  "name": "njgeo: Tools for Geocoding Addresses in New Jersey using the 'NJOGIS' API",
   "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.1.0",
   "programmingLanguage": {
@@ -12,6 +12,12 @@
     "url": "https://r-project.org"
   },
   "runtimePlatform": "R version 4.1.2 (2021-11-01)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
   "author": [
     {
       "@type": "Person",
@@ -132,5 +138,5 @@
     "SystemRequirements": null
   },
   "keywords": ["new-jersey", "geocoding", "geocoder", "arcgis"],
-  "fileSize": "86.892KB"
+  "fileSize": "86.877KB"
 }
