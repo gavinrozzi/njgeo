@@ -2,25 +2,28 @@
 % Please edit documentation in R/geocode_njogis.R
 \name{reverse_geocode}
 \alias{reverse_geocode}
-\title{Reverse geocode a set of coordinates}
+\title{Reverse geocode a set of coordinates or an sf point}
 \usage{
-reverse_geocode(lng, lat, distance = NULL, crs = 4326)
+reverse_geocode(input, distance = NULL, crs = 4326)
 }
 \arguments{
-\item{lng}{Longitude}
+\item{input}{Either a 2-element numeric vector (longitude, latitude) or an 'sf' point object.}
 
-\item{lat}{Latitude}
+\item{distance}{Max distance to search around coordinates (in feet). Default is NULL.}
 
-\item{distance}{Max distance to search around coordinates (in feet)}
-
-\item{crs}{Coordinate reference system code of points}
+\item{crs}{Coordinate reference system code of points. Default is 4326.}
 }
 \value{
-Place name and address corresponding to coordinates
+Dataframe with place name and address corresponding to coordinates.
 }
 \description{
-Reverse geocode a set of coordinates
+Reverse geocode a set of coordinates or an sf point
 }
 \examples{
-reverse_geocode(-74.44513, 40.49297)
+reverse_geocode(c(-74.44513, 40.49297)) # Using longitude and latitude
+# Or using an sf point object:
+library(sf)
+point <- st_sfc(st_point(c(-74.44513, 40.49297)), crs = 4326)
+reverse_geocode(point)
+reverse_geocode(c(-74.44513, 40.49297))
 }

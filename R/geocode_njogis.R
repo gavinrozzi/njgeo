@@ -64,13 +64,13 @@ geocode_address_candidates <- function(address = NULL,
   return(candidates)
 }
 
-#' Reverse geocode a set of coordinates
+#' Reverse geocode a set of coordinates or an sf point
 #'
-#' @return Place name and address corresponding to coordinates
-#' @param lng Longitude
-#' @param lat Latitude
-#' @param crs Coordinate reference system code of points
-#' @param distance Max distance to search around coordinates (in feet)
+#' @param input Either a 2-element numeric vector (longitude, latitude) or an 'sf' point object.
+#' @param distance Max distance to search around coordinates (in feet). Default is NULL.
+#' @param crs Coordinate reference system code of points. Default is 4326.
+#' @return Dataframe with place name and address corresponding to coordinates.
+#'
 #' @importFrom jsonlite fromJSON
 #' @importFrom sf st_transform
 #' @importFrom sf st_point
@@ -83,17 +83,38 @@ geocode_address_candidates <- function(address = NULL,
 #' @export
 #'
 #' @examples
-#' reverse_geocode(-74.44513, 40.49297)
-reverse_geocode <- function(lng, lat, distance = NULL, crs = 4326) {
+#' reverse_geocode(c(-74.44513, 40.49297)) # Using longitude and latitude
+#' # Or using an sf point object:
+#' library(sf)
+#' point <- st_sfc(st_point(c(-74.44513, 40.49297)), crs = 4326)
+#' reverse_geocode(point)
+#' @export
+#'
+#' @examples
+#' reverse_geocode(c(-74.44513, 40.49297))
+reverse_geocode <- function(input, distance = NULL, crs = 4326) {
 
-  # Convert inputted arguments to an sf point
-  p <- sf::st_point(c(lng, lat))
+  # Check if the input is an sf object
+  if (inherits(input, "sf")) {
+    # Transform inputed points to NJ's projected coordinate system
+    p <- sf::st_transform(input, 3424)
 
-  # Transform inputed points to NJ's projected coordinate system
-  p <- sf::st_transform(sf::st_sfc(p, crs = crs), 3424)
+    # Extract individual coordinates
+    coords <- sf::st_coordinates(p)
 
-  # Extract individual coordinates
-  coords <- sf::st_coordinates(p)
+  } else if (is.numeric(input[1]) && is.numeric(input[2])) {
+    # Convert inputted arguments to an sf point
+    p <- sf::st_point(c(input[1], input[2]))
+
+    # Transform inputed points to NJ's projected coordinate system
+    p <- sf::st_transform(sf::st_sfc(p, crs = crs), 3424)
+
+    # Extract individual coordinates
+    coords <- sf::st_coordinates(p)
+
+  } else {
+    stop("Input should be either a 2-element numeric vector (longitude and latitude) or an 'sf' point object.")
+  }
 
   # Use the converted coordinates for the API call
   lng <- coords[1]
@@ -116,18 +137,19 @@ reverse_geocode <- function(lng, lat, distance = NULL, crs = 4326) {
     message("njgeo: downloading data")
     # Construct the API call
     response <- httr::GET(baseurl,
-      path = "arcgis/rest/services/Tasks/NJ_Geocode/GeocodeServer/reverseGeocode",
-      query = list(
-        f = "pjson",
-        location = I(paste0(lng, "%2C+", lat)),
-        Distance = distance
-      )
+                          path = "arcgis/rest/services/Tasks/NJ_Geocode/GeocodeServer/reverseGeocode",
+                          query = list(
+                            f = "pjson",
+                            location = I(paste0(lng, "%2C+", lat)),
+                            Distance = distance
+                          )
     )
     response <- jsonlite::fromJSON(httr::content(response, "text"), flatten = TRUE)
     response <- data.frame(do.call(cbind, response[["address"]]))
   }
   return(response)
 }
+
 
 
 #' Batch geocode addresses
