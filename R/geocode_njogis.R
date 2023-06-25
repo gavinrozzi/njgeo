@@ -141,10 +141,17 @@ reverse_geocode <- function(input, distance = NULL, crs = 4326) {
                           )
     )
     response <- jsonlite::fromJSON(httr::content(response, "text"), flatten = TRUE)
-    response <- data.frame(do.call(cbind, response[["address"]]))
+
+    if (is.list(response[["address"]])) {
+      response <- data.frame(do.call(cbind, response[["address"]]))
+    } else {
+      message("No address found for these coordinates.")
+      return(NULL)
+    }
   }
   return(response)
 }
+
 
 
 
