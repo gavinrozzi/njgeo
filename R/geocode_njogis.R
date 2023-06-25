@@ -64,9 +64,9 @@ geocode_address_candidates <- function(address = NULL,
   return(candidates)
 }
 
-#' Reverse geocode a set of coordinates or an sf point
+#' Reverse geocode a set of coordinates, an 'sf' point, or an 'sfc' point
 #'
-#' @param input Either a 2-element numeric vector (longitude, latitude) or an 'sf' point object.
+#' @param input Either a 2-element numeric vector (longitude, latitude), an 'sf' point object, or an 'sfc' object.
 #' @param distance Max distance to search around coordinates (in feet). Default is NULL.
 #' @param crs Coordinate reference system code of points. Default is 4326.
 #' @return Dataframe with place name and address corresponding to coordinates.
@@ -86,35 +86,31 @@ geocode_address_candidates <- function(address = NULL,
 #' reverse_geocode(c(-74.44513, 40.49297)) # Using longitude and latitude
 #' # Or using an sf point object:
 #' library(sf)
-#' point <- st_sfc(st_point(c(-74.44513, 40.49297)), crs = 4326)
-#' reverse_geocode(point)
-#' @export
-#'
-#' @examples
-#' reverse_geocode(c(-74.44513, 40.49297))
+#' point_sf <- st_sfc(st_point(c(-74.44513, 40.49297)), crs = 4326)
+#' reverse_geocode(point_sf)
+#' # Or using an sfc object:
+#' point_sfc <- st_point(c(-74.44513, 40.49297))
+#' reverse_geocode(point_sfc)
 reverse_geocode <- function(input, distance = NULL, crs = 4326) {
 
-  # Check if the input is an sf object
-  if (inherits(input, "sf")) {
+  # Check if the input is an sf or sfc object or a numeric vector
+  if (inherits(input, "sf") || inherits(input, "sfc")) {
     # Transform inputed points to NJ's projected coordinate system
     p <- sf::st_transform(input, 3424)
 
-    # Extract individual coordinates
-    coords <- sf::st_coordinates(p)
-
-  } else if (is.numeric(input[1]) && is.numeric(input[2])) {
+  } else if (is.numeric(input) && length(input) == 2) {
     # Convert inputted arguments to an sf point
     p <- sf::st_point(c(input[1], input[2]))
 
     # Transform inputed points to NJ's projected coordinate system
     p <- sf::st_transform(sf::st_sfc(p, crs = crs), 3424)
 
-    # Extract individual coordinates
-    coords <- sf::st_coordinates(p)
-
   } else {
-    stop("Input should be either a 2-element numeric vector (longitude and latitude) or an 'sf' point object.")
+    stop("Input should be either a 2-element numeric vector (longitude and latitude), an 'sf' point object, or an 'sfc' object.")
   }
+
+  # Extract individual coordinates
+  coords <- sf::st_coordinates(p)
 
   # Use the converted coordinates for the API call
   lng <- coords[1]
