@@ -270,7 +270,7 @@ batch_geocode_sl <- function(df, id, address, crs = 4326) {
     message("njgeo: downloading data")
     # Construct the API call
     response <- httr::POST(
-      url = "https://geo.nj.gov/arcgis/rest/services/Tasks/Addr_NJ_cascade/GeocodeServer/geocodeAddresses",
+      url = "https://geo.nj.gov/arcgis/rest/services/Tasks/NJ_Geocode/GeocodeServer/geocodeAddresses",
       body = list(addresses = adr_json, f = "pjson", outSR = crs),
       encode = "form",
     )
